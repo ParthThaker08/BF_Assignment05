@@ -65,10 +65,10 @@ lines(seasadj(stl_decomp), col= "Red")
 df_TSer_forecast <- forecast(stl_decomp)
 
 ```
-# Forecasting using the time period 
+# Forecasting the Seasonally Adjusted Decomposed Time Series
 
 ```{r}
-df_TSer_forecast <- forecast(stl_decomp,h=15)
+df_TSer_forecast <- forecast(stl_decomp,h=20)
 plot(df_TSer_forecast)
 
 ```
@@ -110,11 +110,44 @@ plot(decomp_elec)
 
 ```{r}
 
-
 attributes(decomp_elec)
 seasadj(decomp_elec)
 
 ```
+
+
+## Using Decompose Function
+
+```{r}
+
+df_TSer_decompose <- decompose(df_TSer)
+attributes(df_TSer_decompose)
+plot(df_TSer_decompose)
+
+
+```
+
+# Seasonal Adjustment
+
+```{r}
+df_TSer_decompose_seasadj = seasadj(df_TSer_decompose)
+plot(df_TSer_decompose_seasadj)
+
+```
+
+# Plotting Line Seasonally Adjusted Decomposed TS with the original Time Series
+
+```{r}
+
+plot(df_TSer)
+lines(df_TSer_decompose_seasadj, col="purple")
+
+```
+
+
+
+
+
 
 
 
