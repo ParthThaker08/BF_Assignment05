@@ -1,0 +1,128 @@
+---
+title: "Assignment 5"
+author: "Parth Thaker"
+date: "2023-10-28"
+output: html_document
+---
+
+```{r}
+
+library(fpp)
+library(fpp2)
+library(TTR)
+library(readxl)
+
+# Reading Data 
+
+df <- read_excel("Sunspots_Dataset.xlsx")
+
+# Converting to Time Series Data 
+
+df_TSer = ts(df$`Monthly Mean Total Sunspot Number`,start=c(2011,1), end=c(2021,1),frequency = 12)
+
+# Attributes and Structure
+
+attributes(df_TSer)
+str(df_TSer) 
+
+```
+
+# Decomposition 
+
+## Seasonal Decomposition of Time Series by Loess (STL) Method
+
+```{r}
+
+head(df_TSer)
+plot(df_TSer)
+stl_decomp <- stl(df_TSer,s.window ="periodic")
+plot(stl_decomp)
+attributes(stl_decomp)
+
+```
+
+# Taking out Seasonal Adjustment 
+
+```{r}
+
+seasadj(stl_decomp)
+
+```
+
+# Plot a line on the graph
+
+```{r}
+
+plot(df_TSer)
+lines(seasadj(stl_decomp), col= "Red")
+
+```
+
+# Default period forecast
+
+```{r}
+
+df_TSer_forecast <- forecast(stl_decomp)
+
+```
+# Forecasting using the time period 
+
+```{r}
+df_TSer_forecast <- forecast(stl_decomp,h=15)
+plot(df_TSer_forecast)
+
+```
+
+## Plotting the seasonal component
+
+```{r}
+
+plot(stl_decomp$time.series[, "seasonal"], main="Seasonal Component")
+
+```
+
+## Plotting the trend component
+
+```{r}
+
+plot(stl_decomp$time.series[, "trend"], main="Trend Component")
+
+```
+
+## Plotting the remainder component
+```{r}
+
+plot(stl_decomp$time.series[, "remainder"], main="Remainder (Residual) Component")
+
+```
+
+# Other Method Of Decomposition
+
+```{r}
+
+decomp_elec <- decompose(df_TSer)
+plot(decomp_elec)
+
+```
+
+
+# Each one shows different attributes 
+
+```{r}
+
+
+attributes(decomp_elec)
+seasadj(decomp_elec)
+
+```
+
+
+
+
+
+
+
+
+
+
+
